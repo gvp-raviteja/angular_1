@@ -1,0 +1,24 @@
+
+</div><div class="container">
+		
+        
+       <div class="lead text-info">title:<div class="lead text-muted">{prgm.title}</div></div>
+       <div class="lead text-info">description:<div class="lead text-muted">{{prgm.description}}</div></div> 
+        
+        <div class="lead text-info">sample input:<div class="lead text-muted">{{prgm.input}}</div></div> 
+        
+        <div class="lead text-info">sample output:<div class="lead text-muted">{{prgm.output}}</div></div> 
+        <div>
+        <div><div class="lead text-info">code: <textarea rows="10" cols="20" ng-model="code" class="text-info">bondy</textarea></div> 
+        </div>
+            <div class="container"><button ng-click="submit()" class="btn btn-primary">submit</button></div>
+        
+        <div class="well well-large"> 
+            <div ng-switch="result.err">
+                <div ng-switch-when="compilation error" class="text-danger"> {{result}} {{result.status}}</div>
+                <div ng-switch-when="0" class="text-success"> {{result}} {{result.status}} {{result.output}}</div>
+                <div class="text-danger" ng-switch-default > {{result}} {{result.status}} </div>
+            </div>
+        </div>
+	</div>
+</div>

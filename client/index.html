@@ -1,0 +1,37 @@
+<!doctype html>
+<html >
+    <head>
+        <script src="lib/angular.js"></script>
+		<script src="lib/angular-resource.min.js"></script>
+		<script src="lib/angular-route.js"></script>
+        <script src="lib/angular-cookies.js"></script>
+        <script src="js/app.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+            
+    </head>
+    <body class="container" ng-app="myApp">
+        <timer></timer>
+        <div class="navbar">
+  <div class="navbar-inner">
+    <ul class="nav nav-pills" ng-switch on="sesion.islogged">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a ng-href="#/ide">ide</a></li>
+        
+        <li><a ng-href="#/login" ng-switch-when="false">login</a></li>
+        <li><a href="#/signup" ng-switch-when="false">signup</a></li>    
+        
+      <li><a ng-href="#/" ng-switch-when="true" >hi {{sesion.username}}</a></li>
+      <li><a ng-href="#/logout" ng-switch-when="true">logout</a></li>
+    </ul>
+  </div>
+</div>
+		<div  class="container" ng-view>
+            
+		</div>
+        
+    </body>
+</html>
+
+
+
+ 
