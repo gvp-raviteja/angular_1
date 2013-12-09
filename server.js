@@ -9,7 +9,7 @@ var mongoose=require("mongoose");
 var hash = require('./pass').hash;
 var passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy;
-
+var tag = require('./toHtml.js');
 //connecting to database
 mongoose.connect("mongodb://localhost/server");
 
@@ -74,6 +74,7 @@ passport.use(new LocalStrategy(
 ));
 
 app.get('/', function (req, res) {
+    console.log(req.session);
     res.sendfile("./client/index.html");
 });
 
@@ -226,7 +227,7 @@ app.post('/ide/:state',function(req,res){
                     },1000);
                     child.stdout.on('data', function (data) {
                         console.log('stdout: ' + data);
-                        json_status.output=data.toString();
+                        json_status.output=tag.toHtml(data.toString());
                     });
                     child.stderr.on('data', function (data) {
                         console.log('stderr: ' + data);
@@ -304,7 +305,8 @@ app.post('/signup',function(req,res){
                 res.json(details);}
                });
              details.message='signup successful';
-           res.sendfile('./client/index.html');
+             details.path='/index.html';
+           res.json(details);
         }
         else{
             details.message='user already exists';
@@ -315,7 +317,6 @@ app.post('/signup',function(req,res){
             
     });
 })
-
 
 var server = http.createServer(app);
 server.listen(8080);

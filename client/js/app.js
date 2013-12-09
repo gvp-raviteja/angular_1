@@ -1,4 +1,4 @@
-	var myApp = angular.module('myApp', ['ngResource','ngRoute','ngCookies']);
+	var myApp = angular.module('myApp', ['ngResource','ngRoute','ngCookies','ngSanitize']);
 myApp.run(function($rootScope){
     $rootScope.sesion={username:'',islogged:false};
 })
@@ -47,6 +47,11 @@ myApp.factory('compiler',function($resource){
     return $resource('/ide/:state',{state:'@state'})
 })
 
+    myApp.filter('unsafe', function($sce) {
+        return function(val) {
+            return $sce.trustAsHtml(val);
+        };
+    });
 
 /*myApp.factory('compile',function($resource){
     return $resource('/list/:id/',)
@@ -105,7 +110,9 @@ var PrgmCtrl = myApp.controller('prgmCtrl', function($scope,$rootScope,$routePar
         $scope.run=function(){
             var state='run';
             compiler.save({state:state,code:$scope.code,input:$scope.input},function(resp){
-                $scope.out=resp;
+                console.log(resp);
+                $scope.out=resp.output;
+                console.log($scope.out);
             })
         }
     }
@@ -128,7 +135,10 @@ var PrgmCtrl = myApp.controller('prgmCtrl', function($scope,$rootScope,$routePar
        $scope.signup=function(){
            $http.post('/signup',{username:$scope.username,password:$scope.password})
            .success(function(resp,status,headers,config){
-               console.log(resp+status);
+                   console.log(resp);
+                   $rootScope.sesion.islogged=true;
+                   $rootScope.sesion.username=$scope.username;
+                $location.path(resp.path);
            })
            .error(function(data,status,headers,config){
                 console.log(status);
@@ -140,11 +150,9 @@ var PrgmCtrl = myApp.controller('prgmCtrl', function($scope,$rootScope,$routePar
     function loginCtrl($scope,$rootScope,$http,$location){
         $scope.login=function(){
             $http.post('/login',{username:$scope.username,password:$scope.password})
-            .success(function(data, status, headers, config) { 
-                console.log(data);
-                console.log(status);
-                console.log(headers);
-                console.log(config);
+            .success(function(data, status, headers, config) {
+                $rootScope.sesion.islogged=true;
+                $rootScope.sesion.username=$scope.username;
                 $scope.var=data;
                 $location.path('/')
             })

@@ -2,6 +2,7 @@
 
 int main()
 {
-printf("bondy");
+printf("bondy \n");
+printf("ravi \n");
 return 0;
 }

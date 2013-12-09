@@ -10,6 +10,5 @@
 <button ng-click="compile()" class="btn btn-primary col-md-1">compile</button>
 <button ng-click="run()" class="btn btn-danger col-md-1">run</button>
 <br><br><br>
- <div class="well well-large"> 
-     <p class="text-success">{{out}}</p>
-     </div>
+
+     <p  ng-bind-html="out | unsafe"></p>

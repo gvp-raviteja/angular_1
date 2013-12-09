@@ -1,2 +1,28 @@
+<div ng-switch on="sesion.islogged">
+<h1 class="text-info" ng-switch-when="false">WELCOME   TO   ONLINE   COMPILER</h1>
+    <div ng-switch-when="true" ng-controller="userCtrl">
+        <div class="hero-unit">
+            <div class="container lead text-info">Search: <input type="text" ng-model="search"  class="input-medium search-query">
+                <span class="lead text-info">order by:
+                    <select ng-model="orderProp" ng-options="opt for opt in option" class="span3 dropdown-toggle">
+                        {{opt}}
+                    </select>
+                </span>
+            </div>
 
-<h1 class=" text-info">WELCOME   TO   ONLINE   COMPILER</h1>
+            <br>
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>id</th>
+                    <th>title</th>
+                    <th>date</th>
+                </tr>
+                <tr ng-repeat="program in programs | filter:search | orderBy:orderProp">
+                    <td>{{program.id}}</td>
+                    <td ><a ng-href="/#/prgm/{{program.id}}" >{{program.title}}</a></td>
+                    <td>{{program.date}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
