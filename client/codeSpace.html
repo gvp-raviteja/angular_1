@@ -5,9 +5,9 @@
        <div class="lead text-info">title:<div class="lead text-muted">{prgm.title}</div></div>
        <div class="lead text-info">description:<div class="lead text-muted">{{prgm.description}}</div></div> 
         
-        <div class="lead text-info">sample input:<div class="lead text-muted">{{prgm.input}}</div></div> 
+        <div class="lead text-info">sample input:<div class="lead text-muted" ng-bind-html="prgm.input | unsafe"></div></div>
         
-        <div class="lead text-info">sample output:<div class="lead text-muted">{{prgm.output}}</div></div> 
+        <div class="lead text-info">sample output:<div class="lead text-muted"  ng-bind-html="prgm.output | unsafe"></div></div>
         <div>
         <div><div class="lead text-info">code: <textarea rows="10" cols="20" ng-model="code" class="text-info">bondy</textarea></div> 
         </div>

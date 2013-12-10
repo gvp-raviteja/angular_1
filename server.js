@@ -68,10 +68,18 @@ passport.use(new LocalStrategy(
       if (!user.validPassword(password)) {
         return done(null, false, { message: 'Incorrect password.' });
       }
+
       return done(null, user);
     });
   }
 ));
+
+var auth = function(req, res, next){
+    if (!req.isAuthenticated())
+        res.send(401);
+    else
+        next();
+};
 
 app.get('/', function (req, res) {
     console.log(req.session);
@@ -81,12 +89,14 @@ app.get('/', function (req, res) {
 /*app.get('/ide',function(req,res){
     res.sendfile("ide.html");
 })*/
-
-app.get('/list',function(req,res){
+app.get('/session',function(req,res){
+    res.send(req.session);
+})
+app.get('/list',auth,function(req,res){
 	res.json(jsonData);
 });
 
-app.get('/list/:id',function(req,res){
+app.get('/list/:id',auth,function(req,res){
 	var id = ~~req.params.id;
   	var pgm = _(jsonData).find(function(pgm) { return pgm.id === id });
 	
@@ -102,7 +112,7 @@ app.get('/list/:id',function(req,res){
 	}
 });
 
-app.post('/list/:id',function(req,res){
+app.post('/list/:id',auth,function(req,res){
     var code=req.body;
     var id = ~~req.params.id;
     json_status={'status':0,'err':0,'output':0};
@@ -251,45 +261,27 @@ app.post('/ide/:state',function(req,res){
          
 });
 
-/*function authenticate(name, pass, fn) {
-    if (!module.parent) console.log('authenticating %s:%s', name, pass);
+app.post('/logout', function(req, res){
+    req.logOut();
+    res.send(200);
+});
 
-    User.findOne({
-        username: name
-    },function (err, user) {
-        console.log(err);
-        if(err)
-            return fn(err);
-        if(user){
-            console.log(user);
-            return fn(null,user);
-        }
-        err='401';
-        return fn(err);
-    });
+app.get('/loggedin', function(req, res) {
+    res.send(req.isAuthenticated() ? req.user : '0');
+});
 
-}
-*/
-app.post('/login',passport.authenticate('local'),function(req,res){
-    req.session.user=req.body.username;
+app.post('/login',user=passport.authenticate('local') ,function(req,res){
+    /*req.session.user=req.body.username;
     req.session.success="authenicated as "+req.body.username;
     req.session.islogged=true;
-    console.log("bondy")
-    res.send(req.session);
-    /*authenticate(req.body.username, req.body.password, function (err, user){
-        console.log(req.body);
-        if(err){
-            req.session.islogged=false;
-        }
-        else{
-            req.session.user=req.body.username;
-            req.session.success="authenicated as "+req.body.username;
-            req.session.islogged=true;
-        }
-        res.json(req.session);
-    })*/
+    console.log("bondy");
+    console.log(user);*/
+    console.log("login successful");
+
+    res.send(req.user);
+} )
     
-})
+
 
 app.post('/signup',function(req,res){
 
@@ -305,7 +297,6 @@ app.post('/signup',function(req,res){
                 res.json(details);}
                });
              details.message='signup successful';
-             details.path='/index.html';
            res.json(details);
         }
         else{
