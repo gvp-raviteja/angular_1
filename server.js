@@ -137,13 +137,9 @@ app.post('/list/:id',auth,function(req,res){
             
             terminal.stderr.on('data', function (data) {
             console.log('stderr: ' + data);
-                json_status.err='ce';//compilation error
+                json_status.err='compilation error';//compilation error
             });
-            
-            /*terminal.on('exit', function (code) {
-            console.log('child process exited with code ' + code); 
-               // terminal.stdin.end();
-            });*/
+
             
             terminal.on('close',function(code){
                 console.log("end of stdin nd stdout"+code);
@@ -168,7 +164,7 @@ app.post('/list/:id',auth,function(req,res){
                     
                     child.stderr.on('data', function (data) {
                         console.log('stderr: ' + data);
-                        json_status.err='re';// runtime error
+                        json_status.err='runtime error';// runtime error
                     });
                     
                     child.on('exit', function (code) {
@@ -201,7 +197,8 @@ app.post('/ide/:state',function(req,res){
         if(err)
         {
             console.log(err);
-            json_status.status='unable to submit code';
+            json_status.err='unable to submit code';
+            json_status.status=2;
             res.json(json_status);
         }
         else
@@ -209,21 +206,26 @@ app.post('/ide/:state',function(req,res){
             var terminal=spawn('gcc',['-o','temp','temp.c'],function(err){
                 console.log(err);
                 json_status.err=err;
+                json_status.status=2;
                 res.json(json_status);
             });
-            
+            terminal.stdout.on('data',function(data){
+                console.log(data);
+            });
             terminal.stderr.on('data', function (data) {
             json_status.err='compilation error';
+                json_status.status=2;
              res.json(json_status);
             });
             
             terminal.on('close',function(c){
                 if(c!=0){
                     json_status.status='failed';
+                    json_status.status=2;
                     res.json(json_status); 
                 }
                 else if(code.state=="compile"){
-                    json_status.status='success';
+                    json_status.status=1;
                     res.json(json_status); 
                 }
                 else{
@@ -233,6 +235,7 @@ app.post('/ide/:state',function(req,res){
                         child.kill();
                         json_status.err='time limit exceeded'; // time limit exceeded
                         json_status.output=null;
+                        json_status.status=2;
                         res.json(json_status);
                     },1000);
                     child.stdout.on('data', function (data) {
@@ -240,13 +243,12 @@ app.post('/ide/:state',function(req,res){
                         json_status.output=tag.toHtml(data.toString());
                     });
                     child.stderr.on('data', function (data) {
-                        console.log('stderr: ' + data);
                         json_status.err='runtime error';// runtime error
+                        json_status.status=2;
                         res.json(json_status);
                     });
                     child.on('close',function(c){
-                        if(c!=0)
-                            json_status.err='runtime error';
+                        console.log(c);
                         res.json(json_status);
                         
                     });
@@ -280,8 +282,6 @@ app.post('/login',user=passport.authenticate('local') ,function(req,res){
 
     res.send(req.user);
 } )
-    
-
 
 app.post('/signup',function(req,res){
 

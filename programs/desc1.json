@@ -1,5 +1,5 @@
 {
-    "description":"add two numbers and handle all the test cases, first line of input takes value of n i.e. number of test cases and rest of the lines contain the inputs",
+    "description":"convert the given binary input to decimal equivalent and handle all the test cases, first line of input takes value of n i.e. number of test cases and rest of the lines contain the inputs",
     "input":"3 <br> 1111 <br> 1010 <br> 1000",
     "output":"15 <br> 10 <br> 8"
 }

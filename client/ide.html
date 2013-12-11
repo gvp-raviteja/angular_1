@@ -10,5 +10,14 @@
 <button ng-click="compile()" class="btn btn-primary col-md-1">compile</button>
 <button ng-click="run()" class="btn btn-danger col-md-1">run</button>
 <br><br><br>
-
-     <p  ng-bind-html="out | unsafe"></p>
+<div ng-switch on="resp.status" class="well well-lg">
+    <div ng-switch-when="0">
+        <p  ng-bind-html="resp.output | unsafe" class="text-success"></p>
+    </div>
+     <div ng-switch-when="1">
+         <p class="text-success">compilation successful</p>
+     </div>
+    <div ng-switch-when="2">
+        <p class="text-danger">{{ resp.err }}</p>
+    </div>
+</div>

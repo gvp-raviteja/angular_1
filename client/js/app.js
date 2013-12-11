@@ -1,4 +1,4 @@
-	var myApp = angular.module('myApp', ['ngResource','ngRoute','ngCookies','ngSanitize']);
+var myApp = angular.module('myApp', ['ngResource','ngRoute','ngCookies','ngSanitize']);
 myApp.run(function($rootScope,$http,$location){
     $rootScope.user=null;
     $rootScope.islogged=false;
@@ -90,7 +90,7 @@ myApp.run(function($rootScope,$http,$location){
     });
 
 myApp.factory('program', function($resource) {
-  return $resource('/list/:id')
+  return $resource('/list/:id',{id:'@id'})
 });
 
 myApp.factory('compiler',function($resource){
@@ -123,14 +123,14 @@ var PrgmCtrl = myApp.controller('prgmCtrl', function($scope,$rootScope,$routePar
         $scope.compile=function(){
             var state='compile';
             compiler.save({state:state,code:$scope.code},function(resp){
-                $scope.out=resp;    
+                $scope.resp=resp;
             })
         }
         $scope.run=function(){
             var state='run';
             compiler.save({state:state,code:$scope.code,input:$scope.input},function(resp){
                 console.log(resp);
-                $scope.out=resp.output;
+                $scope.resp=resp;
                 console.log($scope.out);
             })
         }

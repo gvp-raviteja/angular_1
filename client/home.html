@@ -1,5 +1,9 @@
 <div ng-switch on="islogged">
-<h1 class="text-info" ng-switch-when="false">WELCOME   TO   ONLINE   COMPILER</h1>
+<div class="text-info well well-lg" ng-switch-when="false">
+    <h1 >WELCOME   TO   ONLINE   COMPILER </h1><br><br>
+    <div class="text-primary"> click on IDE to run any C program </div> <br>
+    <div class="text-primary">login to access the list of programs</div>
+</div>
     <div ng-switch-when="true" ng-controller="userCtrl">
         <div class="hero-unit">
             <div class="container lead text-info">Search: <input type="text" ng-model="search"  class="input-medium search-query">
