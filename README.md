@@ -14,7 +14,7 @@ configure mongodb in windows from this link: http://docs.mongodb.org/manual/tuto
 
 how to start the application?
 
-1)open the current directory and type "npm install" in cmd to install all dependencies
+1)click on mongo.bat or run the mongo server manually to listen to default port
 
 2)click on run.bat file or open cmd and type "node server.js"
 
