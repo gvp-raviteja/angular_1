@@ -6,7 +6,6 @@ var fs = require('fs-extra'),
     _ = require('underscore');
 var spawn=require('child_process').spawn;
 var mongoose=require("mongoose");
-var hash = require('./pass').hash;
 var passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy;
 var tag = require('./toHtml.js');
