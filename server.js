@@ -302,3 +302,4 @@ app.post('/signup',function(req,res){
 
 var server = http.createServer(app);
 server.listen(8080);
+console.log("server is listening to port 8080");
