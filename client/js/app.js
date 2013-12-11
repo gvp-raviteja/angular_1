@@ -155,6 +155,7 @@ var PrgmCtrl = myApp.controller('prgmCtrl', function($scope,$rootScope,$routePar
            .error(function(data,status,headers,config){
                 console.log(status);
                 console.log("failed");
+                $scope.var="user already exists";
            })
        }
     }

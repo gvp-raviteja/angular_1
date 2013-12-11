@@ -25,10 +25,7 @@ UserSchema.methods.validPassword=function( pwd ) {
 
 //creating a model with defined user schema
 var User = mongoose.model('users', UserSchema);
-var user1=new User({username:'ravi',password:'123'});
-user1.save(function(err){
-           console.log(err);
-           });
+
 
 jsonData=fs.readJsonSync('./programs/programs.json');
 json_status={'status':null,'err':null,'output':null};
@@ -272,14 +269,8 @@ app.get('/loggedin', function(req, res) {
     res.send(req.isAuthenticated() ? req.user : '0');
 });
 
-app.post('/login',user=passport.authenticate('local') ,function(req,res){
-    /*req.session.user=req.body.username;
-    req.session.success="authenicated as "+req.body.username;
-    req.session.islogged=true;
-    console.log("bondy");
-    console.log(user);*/
+app.post('/login',passport.authenticate('local') ,function(req,res){
     console.log("login successful");
-
     res.send(req.user);
 } )
 
@@ -294,7 +285,7 @@ app.post('/signup',function(req,res){
              user1.save(function(err){
                 if(err){
                 details.message=err;
-                res.json(details);}
+                res.status(400).json(details);}
                });
              details.message='signup successful';
            res.json(details);
